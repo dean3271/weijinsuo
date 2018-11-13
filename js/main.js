@@ -75,8 +75,34 @@ $("#news .nav-pills li a").on("click",function () {
   $title.text(title);
 });
 
+/* 轮播图移动端滑动效果 */
+//1.手指触摸开始时，得到触摸点的坐标
+//2.移动时，得到实时x轴的坐标
+//3.用2-1得到X方向移动移动了多少，正值则向右滑动，反之向左
+//   规定只有移动距离的绝对值大于50px时，判断滑动成功
+var startX;
+var endX;
+var moveX
+//用carousel类绑定事件，让页面上其他相同功能的版块共享此方法
+$(".carousel").on("touchstart",function (event) {  
+    //console.log(event);
+    //注意原生JS的方法没有originalEvent属性
+    //event.touches[0].clientX; 原生JS方法
+    startX = event.originalEvent.touches[0].clientX;
+})
+$("#main_ad").on("touchmove",function (event) {  
+  endX = event.originalEvent.touches[0].clientX;
+})
+$("#main_ad").on("touchend",function (event) { 
+  // 得到差值
+  moveX = endX-startX;//Math.abs();
+  if(moveX > 50){
+    $(this).carousel('prev');
+  }else if (moveX < -50) {
+    $(this).carousel('next');
 
-
+  }
+})
 
 
 });
